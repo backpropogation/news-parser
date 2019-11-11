@@ -1,0 +1,10 @@
+/server/staticfiles
+/server/media
+.idea
+.vscode
+*.log
+*.pyc
+**/__pycache__/
+*.sql
+*.7z
+/db_data

@@ -1,0 +1,12 @@
+Django==2.2.1
+psycopg2-binary==2.8.2
+
+dj-database-url==0.5.0
+
+celery==4.3.0
+djangorestframework==3.10.3
+python-scrapyd-api==2.1.2
+beautifulsoup4
+requests
+django-cors-headers
+requests-html
