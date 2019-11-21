@@ -1,4 +1,4 @@
-NEWS_FIELDS = (
+SITE_FIELDS = (
     'news_css',
     'title_css',
     'sub_title_css',
