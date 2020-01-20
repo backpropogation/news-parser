@@ -6,19 +6,16 @@ class News(models.Model):
     This entity represents piece of news with all general parts.
     """
 
-    title = models.CharField(
-        max_length=255,
+    title = models.TextField(
         null=True,
         unique=True,
         verbose_name='Title'
     )
-    sub_title = models.CharField(
-        max_length=1255,
+    sub_title = models.TextField(
         null=True,
         verbose_name='Subtitle'
     )
-    description = models.CharField(
-        max_length=255,
+    description = models.TextField(
         null=True,
         verbose_name='Description'
     )

@@ -42,19 +42,24 @@ services:
 
     db:
       image: postgres:11.2
+      depends_on:
+        - redis
       environment:
         POSTGRES_DB: postgres
         POSTGRES_USER: postgres
+    redis:
+      image: redis:5.0.5
 
-    vue:
-      build:
-        context: ./
-        dockerfile: ./vue-spa/Dockerfile
-        command: http-server
-      depends_on:
-        - server
-      expose:
-        - 8080
-      ports:
-        - 8080:8080
+
+#    vue:
+#      build:
+#        context: ./
+#        dockerfile: ./vue-spa/Dockerfile
+#        command: http-server
+#      depends_on:
+#        - server
+#      expose:
+#        - 8080
+#      ports:
+#        - 8080:8080
 
