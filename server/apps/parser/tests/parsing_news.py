@@ -1,4 +1,5 @@
-from django.test import TestCase
+from django.db import transaction
+from django.test import TestCase, TransactionTestCase
 
 from apps.parser.models import Site, News
 from apps.parser.tasks import start_parsing
@@ -7,7 +8,7 @@ from apps.parser.tasks import start_parsing
 PASMI_NEWS_COUNT = 65
 
 
-class ParsingTestCase(TestCase):
+class ParsingTestCase(TransactionTestCase):
     def test_parsing_site(self):
         """
         Test parsing.
@@ -27,6 +28,5 @@ class ParsingTestCase(TestCase):
                 )
             ]
         )
-
         start_parsing.apply(args=(Site.objects.first().id,))
-        self.assertAlmostEqual(News.objects.count(), PASMI_NEWS_COUNT)
+        self.assertAlmostEqual(News.objects.count(), PASMI_NEWS_COUNT, delta=5)

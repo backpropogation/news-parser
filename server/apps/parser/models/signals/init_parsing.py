@@ -10,6 +10,5 @@ def init_parsing(instance, **kwargs):
     """
     Post save signal needed to start task in the background after creating site object.
     """
-
     if instance.pk is not None:
         start_parsing.delay(instance.id)

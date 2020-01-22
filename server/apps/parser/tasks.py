@@ -22,7 +22,6 @@ def start_parsing(site_id):
     options.add_argument('--no-sandbox')
     driver = webdriver.Chrome(options=options)
     driver.get(site.url)
-
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     selectors = SiteParsingSerializer(site).data
     news_list = soup.select(selectors['news'])
@@ -38,3 +37,4 @@ def start_parsing(site_id):
             )
         except IntegrityError:
             pass
+    driver.quit()
