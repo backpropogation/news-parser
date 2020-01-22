@@ -1,13 +1,13 @@
-import requests
 from bs4 import BeautifulSoup
 from django.db import IntegrityError
-from django.forms.models import model_to_dict
+from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from apps.parser.models import Site, SITE_FIELDS, News
+from apps.parser.models import Site, News
+from apps.parser.serializers import SiteParsingSerializer
 from apps.parser.utils import text_or_none
 from parsing.celery import app
-from selenium import webdriver
+
 
 @app.task
 def start_parsing(site_id):
@@ -21,11 +21,10 @@ def start_parsing(site_id):
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     driver = webdriver.Chrome(options=options)
-    driver.implicitly_wait(10)
     driver.get(site.url)
 
     soup = BeautifulSoup(driver.page_source, 'html.parser')
-    selectors = {field.replace('_css', ''): css_path for field, css_path in model_to_dict(site, fields=SITE_FIELDS).items()}
+    selectors = SiteParsingSerializer(site).data
     news_list = soup.select(selectors['news'])
     selectors.pop('news')
     for news in news_list:
@@ -39,6 +38,3 @@ def start_parsing(site_id):
             )
         except IntegrityError:
             pass
-
-
-
