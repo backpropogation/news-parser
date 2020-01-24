@@ -46,6 +46,7 @@ class LoginViewSet(ViewSet):
                     'status': 'successfully logined'
                 })
             else:
+                # TODO добавить повторную отправку ссылки для подтверждения
                 return Response({'активируй мыло'}, status=status.HTTP_403_FORBIDDEN)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
