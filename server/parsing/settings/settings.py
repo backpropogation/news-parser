@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'des',
     'rest_framework.authtoken',
     'apps.parser',
 ]
@@ -64,7 +65,6 @@ REST_FRAMEWORK = {
     ]
 }
 
-
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -102,3 +102,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 CORS_ORIGIN_ALLOW_ALL = True
+EMAIL_BACKEND = 'des.backends.ConfiguredEmailBackend'
