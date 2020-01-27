@@ -10,7 +10,7 @@ from rest_framework.throttling import UserRateThrottle
 from rest_framework.viewsets import ViewSet
 
 from apps.users.serializers import UserSerializer, UserLoginSerializer
-from apps.users.tasks import send_activation_url
+from apps.users.tasks import send_activation_url, resend_activation_url
 from apps.users.utils import ResponseStatuses
 
 User = get_user_model()
@@ -49,9 +49,9 @@ class LoginViewSet(ViewSet):
                         'token': token.key,
                     })
                 )
-            if not cache.get(f'{user.username}_activation_link_resent', False):
+            if not cache.get(f'{user.username}_activation_link_was_resent', False):
                 webhook_url = reverse('email-confirm', request=request)
-                send_activation_url.apply_async(args=(user.username, user.email, webhook_url), kwargs={'resend': True})
+                resend_activation_url.apply_async(args=(user.username, user.email, webhook_url))
                 return Response(ResponseStatuses.EMAIL_NOT_ACTIVATED, status=status.HTTP_401_UNAUTHORIZED)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
