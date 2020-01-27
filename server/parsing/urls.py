@@ -9,5 +9,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('django-des/', include(des_urls)),
-    path('confirm/', mail_confirm, name='email-confirm')
+    path('email/confirm/', mail_confirm, name='email-confirm')
 ]

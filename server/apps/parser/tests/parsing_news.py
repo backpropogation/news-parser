@@ -1,9 +1,7 @@
-from django.db import transaction
-from django.test import TestCase, TransactionTestCase
+from django.test import TransactionTestCase
 
 from apps.parser.models import Site, News
 from apps.parser.tasks import start_parsing
-
 
 PASMI_NEWS_COUNT = 65
 
