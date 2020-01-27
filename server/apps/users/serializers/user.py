@@ -1,6 +1,8 @@
-from django.contrib.auth import password_validation
+from django.contrib.auth import password_validation, get_user_model
 from django.contrib.auth.models import User
 from rest_framework import serializers
+
+User = get_user_model()
 
 
 class UserSerializer(serializers.Serializer):

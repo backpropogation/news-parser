@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'des',
     'rest_framework.authtoken',
     'apps.parser',
+    'apps.users'
 ]
 
 MIDDLEWARE = [
@@ -103,3 +104,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 CORS_ORIGIN_ALLOW_ALL = True
 EMAIL_BACKEND = 'des.backends.ConfiguredEmailBackend'
+AUTH_USER_MODEL = 'users.User'
