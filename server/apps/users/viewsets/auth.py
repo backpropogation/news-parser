@@ -8,14 +8,13 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.viewsets import ViewSet
 
-from apps.users.serializers import UserSerializer
+from apps.users.serializers import UserSerializer, UserLoginSerializer
 from apps.users.tasks import send_activation_url
 
 User = get_user_model()
 
 
 class RegisterViewSet(ViewSet):
-
     def create(self, request):
         user_data = {
             'username': request.data.get('username', None),
@@ -39,19 +38,20 @@ class LoginViewSet(ViewSet):
             'username': request.data.get('username', None),
             'password': request.data.get('password', None),
         }
-        user = authenticate(**user_data)
-        if user:
-            if user.has_activated_email:
+        serializer = UserLoginSerializer(data=user_data)
+        if serializer.is_valid(raise_exception=True):
+            user = authenticate(**user_data)
+            if user and user.has_activated_email:
                 token, created = Token.objects.get_or_create(user=user)
                 return Response({
                     'token': token.key,
                     'status': 'successfully logined'
                 })
-            elif not cache.get(f'{user.username}_activation_link_resent', False):
+            if not cache.get(f'{user.username}_activation_link_resent', False):
                 webhook_url = reverse('email-confirm', request=request)
                 send_activation_url.apply_async(args=(user.username, user.email, webhook_url), kwargs={'resend': True})
                 return Response({
-                    'message': 'your email is not activated'
+                    'message': 'your email is not activated, check your mail we sent you a message'
                 }, status=status.HTTP_403_FORBIDDEN
                 )
         return Response(status=status.HTTP_401_UNAUTHORIZED)

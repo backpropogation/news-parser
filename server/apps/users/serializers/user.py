@@ -18,3 +18,7 @@ class UserSerializer(serializers.Serializer):
     def validate_password(self, value):
         password_validation.validate_password(value)
         return value
+
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=25)
+    password = serializers.CharField(max_length=20)

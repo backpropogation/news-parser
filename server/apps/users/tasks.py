@@ -11,6 +11,7 @@ from parsing.celery import app
 def send_activation_url(username, email, webhook_url, resend=False):
     if resend:
         hash_string = cache.get(f'{username}_activation_link', None)
+        cache.set(f'{username}_activation_link_resent', True, timeout=60**3)
     else:
         hash_string = hashlib.md5(f"{email}{str(datetime.datetime.now())}".encode()).hexdigest()
         cache.set(hash_string, username, timeout=None)      # ДЛя вебхука
