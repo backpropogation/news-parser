@@ -18,12 +18,7 @@ User = get_user_model()
 
 class RegisterViewSet(ViewSet):
     def create(self, request):
-        user_data = {
-            'username': request.data.get('username', None),
-            'password': request.data.get('password', None),
-            'email': request.data.get('email', None)
-        }
-        serializer = UserSerializer(data=user_data)
+        serializer = UserSerializer(data=request.POST)
         if serializer.is_valid(raise_exception=True):
             user = User.objects.create_user(**serializer.validated_data)
             webhook_url = reverse('email-confirm', request=request)
@@ -35,13 +30,9 @@ class LoginViewSet(ViewSet):
     throttle_classes = [UserRateThrottle]
 
     def create(self, request):
-        user_data = {
-            'username': request.data.get('username', None),
-            'password': request.data.get('password', None),
-        }
-        serializer = UserLoginSerializer(data=user_data)
+        serializer = UserLoginSerializer(data=request.POST)
         if serializer.is_valid(raise_exception=True):
-            user = authenticate(**user_data)
+            user = authenticate(**serializer.validated_data)
             if user and user.has_activated_email:
                 token, created = Token.objects.get_or_create(user=user)
                 return Response(
