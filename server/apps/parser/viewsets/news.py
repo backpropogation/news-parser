@@ -1,11 +1,9 @@
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from rest_framework import viewsets
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-
+from apps.parser.filters import NewsFilter
+from django_filters import rest_framework as filters
 from apps.parser.models import News
 from apps.parser.serializers import NewsReadSerializer
 
@@ -23,4 +21,5 @@ class NewsViewSet(CreateModelMixin, ListModelMixin, RetrieveModelMixin, viewsets
     pagination_class = NewsSetPagination
     serializer_class = NewsReadSerializer
     queryset = News.objects.all()
-    permission_classes = (IsAuthenticated,)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = NewsFilter
