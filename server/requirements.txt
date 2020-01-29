@@ -14,3 +14,4 @@ selenium
 django-redis
 gunicorn
 django-des
+django-filter==2.2.0
