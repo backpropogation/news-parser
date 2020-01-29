@@ -1,1 +1,1 @@
-from .auth import RegisterViewSet, LoginViewSet
+from .auth import RegisterViewSet, LoginViewSet, mail_confirm
